@@ -2,6 +2,12 @@
 {
     public static class Extensoes
     {
+        public static int TrataValor(this int? valor) =>
+            valor == null ? 0 : valor.Value;
+
+        public static decimal TrataValor(this decimal? valor) =>
+            valor == null ? 0 : valor.Value;
+
         public static decimal ConverterPorcentagemEmDecimal(this decimal porcentagem) =>
             porcentagem / 100;
 

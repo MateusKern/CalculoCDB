@@ -9,7 +9,7 @@ import { Data } from 'popper.js';
 })
 export class CalcularCdbComponent {
   public baseUrl: string = '';
-  public erro: string = '';
+  public erros: string[] = [];
   public calculando: boolean = false;
   public deuCertoCalculo: boolean = true;
   public resultadoCalculo!: ResultadoCalculo;
@@ -20,27 +20,31 @@ export class CalcularCdbComponent {
     this.baseUrl = baseurl;
 
     this.calculoForm = this.fb.group({
-      valor: [0, Validators.required],
-      meses: [0, Validators.required]
+      valor: [0],
+      meses: [0]
     });
   }
 
   calcular(): void {
     this.calculando = true;
+    this.erros = [];
 
     let params = new HttpParams();
-    params = params.append('meses', this.calculoForm.get('meses')!.value);
-    params = params.append('valor', this.calculoForm.get('valor')!.value);
+    params = params.append('meses', Math.trunc(this.calculoForm.get('meses')!.value ?? 0));
+    params = params.append('valor', this.calculoForm.get('valor')!.value ?? 0);
 
-    this.http.get<ResultadoCalculo>(this.baseUrl + 'calcular-cdb', { params }).subscribe(result => {
-      this.calculando = false;
-      this.deuCertoCalculo = true;
-      this.resultadoCalculo = result;
-    }, error => {
-      this.calculando = false;
-      this.deuCertoCalculo = false;
-      console.log(error);
-      this.erro = error;
+    this.http.get<ResultadoCalculo>(this.baseUrl + 'calcular-cdb', { params }).subscribe({
+      next: (result) => {
+        this.calculando = false;
+        this.deuCertoCalculo = true;
+        this.resultadoCalculo = result;
+      },
+      error: (error) => {
+        this.calculando = false;
+        this.deuCertoCalculo = false;
+        console.log(error);
+        this.erros = error.error;
+      }
     });
   }
 }

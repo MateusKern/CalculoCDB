@@ -1,33 +1,48 @@
 <h1 id="tableLabel">Cálculo do CDB</h1>
 
-<p>
-  Preencha os campos corretamente para fazer uma simulação:
-</p>
+<div class="row">
+  <p>
+    Preencha os campos corretamente para fazer uma simulação:
+  </p>
+</div>
 
-<form [formGroup]="calculoForm" (ngSubmit)="calcular()">
-  <label class="form-label" for="valor">Valor para investimento:</label>
-  <input type="number" id="valor" formControlName="valor" />
+<div class="row">
+  <div class="col-md-5">
+    <form [formGroup]="calculoForm" (ngSubmit)="calcular()">
+      <div class="form-group col-md-12">
+        <label class="form-label" for="valor">Valor para investimento:</label>
+        <input class="form-control form-control-sm" type="number" id="valor" formControlName="valor" />
+      </div>
 
-  <label class="form-label" for="meses">Meses para resgatar o investimento:</label>
-  <input type="number" id="meses" formControlName="meses" />
+      <div class="form-group col-md-12">
+        <label class="form-label" for="meses">Meses para resgatar o investimento:</label>
+        <input class="form-control form-control-sm" type="number" id="meses" formControlName="meses" />
+      </div>
+      <br />
+      <input type="submit" class="btn btn-primary" value="Calcular" />
+    </form>
 
-  <input type="submit" value="Calcular" />
-</form>
+    <br />
+    <div class="alert alert-primary" role="alert" *ngIf="calculando">Calculando...</div>
 
-<p *ngIf="calculando"><em>Calculando...</em></p>
-<p *ngIf="!calculando && !deuCertoCalculo"><em>Deu erro ao calcular investimento: {{ erro }}</em></p>
-
-<div id="resultado" *ngIf="!calculando && resultadoCalculo && deuCertoCalculo">
-  <dl>
-    <dt>Valor inicial investido:</dt>
-    <dd>{{ resultadoCalculo.valorInicial | currency:'BRL' }}</dd>
-    <dt>Data da liquidação do investimento:</dt>
-    <dd>{{ resultadoCalculo.dataRetirada | date:'dd/MM/yyyy' }}</dd>
-    <dt>Valor bruto:</dt>
-    <dd>{{ resultadoCalculo.valorBruto | currency:'BRL' }}</dd>
-    <dt>Porcentagem do imposto:</dt>
-    <dd>{{ resultadoCalculo.porcentagem | percent:'1.2-2' }}</dd>
-    <dt>Valor líquido:</dt>
-    <dd>{{ resultadoCalculo.valorLiquido | currency:'BRL' }}</dd>
-  </dl>
+    <div *ngIf="!calculando && !deuCertoCalculo">
+      <div class="alert alert-danger" role="alert" *ngFor="let erro of erros">{{erro}}</div>
+    </div>
+  </div>
+  <div class="col-md-6 offset-1">
+    <div id="resultado" *ngIf="!calculando && resultadoCalculo && deuCertoCalculo">
+      <dl>
+        <dt>Valor inicial investido:</dt>
+        <dd>{{ resultadoCalculo.valorInicial | currency:'BRL' }}</dd>
+        <dt>Data da liquidação do investimento:</dt>
+        <dd>{{ resultadoCalculo.dataRetirada | date:'dd/MM/yyyy' }}</dd>
+        <dt>Valor bruto:</dt>
+        <dd>{{ resultadoCalculo.valorBruto | currency:'BRL' }}</dd>
+        <dt>Porcentagem do imposto:</dt>
+        <dd>{{ resultadoCalculo.porcentagem | percent:'1.2-2' }}</dd>
+        <dt>Valor líquido:</dt>
+        <dd>{{ resultadoCalculo.valorLiquido | currency:'BRL' }}</dd>
+      </dl>
+    </div>
+  </div>
 </div>
