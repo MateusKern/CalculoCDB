@@ -6,9 +6,9 @@ const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_H
 const PROXY_CONFIG = [
   {
     context: [
-      "/weatherforecast",
+      "/calcular-cdb"
    ],
-    proxyTimeout: 10000,
+    proxyTimeout: 30000,
     target: target,
     secure: false,
     headers: {
