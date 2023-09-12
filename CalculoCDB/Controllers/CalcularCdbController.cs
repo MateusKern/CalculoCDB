@@ -38,7 +38,11 @@ namespace CalculoCDB.Controllers
                 if (mensagensErro.Any())
                     return BadRequest(mensagensErro);
 
-                decimal valorBruto = valor.TrataValor() * (1 + (_cdi.ConverterPorcentagemEmDecimal() * _tb.ConverterPorcentagemEmDecimal()));
+                decimal valorBruto = valor.TrataValor();
+
+                for (int i = 0; i < meses; i++)
+                    valorBruto *= 1 + (_cdi.ConverterPorcentagemEmDecimal() * _tb.ConverterPorcentagemEmDecimal());
+
                 decimal lucro = valorBruto - valor.TrataValor();
                 decimal porcentagem = meses.TrataValor().RetornaPorcentagemImposto(_impostos);
                 decimal lucroLiquido = lucro - (lucro * porcentagem);
