@@ -1,6 +1,8 @@
-﻿namespace CalculoCDB
+﻿using Flunt.Notifications;
+
+namespace CalculoCDB
 {
-    public class ResultadoCalculoCdb
+    public class ResultadoCalculoCdb : Notifiable<Notification>
     {
         public decimal ValorInicial { get; set; }
         public DateOnly DataRetirada { get; set; }
